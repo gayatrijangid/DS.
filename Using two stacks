@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+int stack1[MAX], stack2[MAX];
+int top1 = -1, top2 = -1;
+
+// Function to push an element onto stack1
+void push1(int val) {
+    stack1[++top1] = val;
+}
+
+// Function to pop an element from stack1
+int pop1() {
+    return stack1[top1--];
+}
+
+// Function to push an element onto stack2
+void push2(int val) {
+    stack2[++top2] = val;
+}
+
+// Function to pop an element from stack2
+int pop2() {
+    return stack2[top2--];
+}
+
+// Function to enqueue an element (push to stack1)
+void enqueue(int val) {
+    push1(val);
+}
+
+// Function to dequeue an element (pop from stack2)
+int dequeue() {
+    // If stack2 is empty, move all elements from stack1 to stack2
+    if (top2 == -1) {
+        while (top1 != -1) {
+            push2(pop1());
+        }
+    }
+    if (top2 == -1) {
+        printf("Queue is empty.\n");
+        return -1;
+    }
+    return pop2();
+}
+
+int main() {
+    int choice, val;
+    
+    while (1) {
+        printf("\nQueue Operations using Two Stacks\n");
+        printf("1. Enqueue\n");
+        printf("2. Dequeue\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        
+        switch (choice) {
+            case 1:
+                printf("Enter value to enqueue: ");
+                scanf("%d", &val);
+                enqueue(val);
+                printf("Enqueued %d\n", val);
+                break;
+            case 2:
+                val = dequeue();
+                if (val != -1) {
+                    printf("Dequeued: %d\n", val);
+                }
+                break;
+            case 3:
+                printf("Exiting program.\n");
+                return 0;
+            default:
+                printf("Invalid choice, please try again.\n");
+        }
+    }
+}
